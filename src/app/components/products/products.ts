@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IProduct } from '../../models/iproduct';
 import { ICategory } from '../../models/icategory';
 import { FormsModule } from '@angular/forms';
-import { NgClass, NgStyle } from '@angular/common';
+import { CurrencyPipe, DatePipe, JsonPipe, LowerCasePipe, NgClass, NgStyle, TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { Highlight } from '../../directives/highlight';
+import { ShortenPipe } from '../../pipes/shorten-pipe';
 
 @Component({
   selector: 'app-products',//directive
-  imports: [FormsModule, NgClass, NgStyle,Highlight],
+  imports: [FormsModule, Highlight, UpperCasePipe, LowerCasePipe, TitleCasePipe, CurrencyPipe,
+    DatePipe, JsonPipe, ShortenPipe
+  ],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class Products {
+export class Products  implements OnChanges{
+  @Input('sentSelectedCatId') recievedCatId:number=0
+  //1-define the event
+ @Output() onOrderPriceChanged:EventEmitter<number>=new EventEmitter<number>()
+
   totalOrderPrice: number = 0
-  selectedCatId:number=0
-  cardClass="col"
+  cardClass = "col"
+  d: Date = new Date()
   products: IProduct[] = [
     {
       id: 1,
@@ -67,30 +74,29 @@ export class Products {
       catId: 3
     }
   ];
+  filteredProducts = this.products
 
-  categories: ICategory[] = [
-    {
-      id: 1,
-      name: "Electronics"
-    },
-    {
-      id: 2,
-      name: "Clothing"
-    },
-    {
-      id: 3,
-      name: "Stationery"
-    }
-  ];
 
+
+  // constructor(){//dependency injection
+  //  this.products=
+  // }
+
+  // ngOnInit(){}
   buy(price: number, quantity: string, evt: MouseEvent) {
-    console.log(evt);
-
     this.totalOrderPrice += price * +quantity
+    //2- fire the event
+    this.onOrderPriceChanged.emit(this.totalOrderPrice)
   }
 
-  changeSelectedCatId(){
-    this.selectedCatId=2
+  ngOnChanges(): void {
+    this.filterProducts()
   }
-
+  filterProducts() {
+    if(this.recievedCatId==0){
+      this.filteredProducts=this.products
+      return;
+    }
+   this.filteredProducts=this.products.filter((prd)=>prd.catId==this.recievedCatId)
+  }
 }

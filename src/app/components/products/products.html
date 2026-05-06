@@ -1,67 +1,44 @@
-<h1>order price : {{ totalOrderPrice }}</h1>
-<h3>selected category id : {{ selectedCatId }}</h3>
-<div class="w-50 m-auto">
-  <label for="" class="form-label">Categories</label>
-  <select class="form-select form-select-lg" name="" id="" [(ngModel)]="selectedCatId">
-    @for (cat of categories; track cat.id) {
-      <option [value]="cat.id">{{ cat.name }}</option>
-    }
-  </select>
-</div>
-
-<button (click)="changeSelectedCatId()">change cat id</button>
 <div class="row row-cols-1 row-cols-md-4 g-4 m-5">
-  @for (prd of products; track prd.id; let i=$index,c=$count,e=$even,o=$odd,f=$first,l=$last) {
-    <!-- <div *ngFor="let prd of products" class="col" [class.d-none]="prd.catId != selectedCatId"> -->
-    <!-- <div class="col" [class.d-none]="prd.catId != selectedCatId"> -->
-    @if (prd.catId == selectedCatId || selectedCatId == 0) {
-      <!-- <div class="col" *ngIf="prd.catId == selectedCatId||selectedCatId==0"> -->
-      <div class="col" >
-        <!-- <div class="card" [ngClass]="{'bg-warning':prd.quantity==0,'text-danger':prd.quantity==0}"> -->
-        <!-- <div class="card" [style.background-color]="(prd.quantity==0)?'yellow':'white'"> -->
-        <!-- <div class="card" [ngStyle]="{'background-color':(prd.quantity==0)?'yellow':'white','color':(prd.quantity==0)?'red':'black'}"> -->
-           <div class="card" appHighlight defualtColor="blue" highlightColor="brown">
-          <img [src]="prd.imgUrl" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <h5 class="card-title">-{{ prd.name }}</h5>
-            <p class="card-text">Price is {{ prd.price }}</p>
-            @switch (prd.quantity) {
-              @case (0) {
-                <p class="card-text">Out of stock</p>
-              }
-              @case (1) {
-                <p class="card-text">Last item</p>
-              }
-              @default {
-                <p class="card-text">Quantity is {{ prd.quantity }}</p>
-              }
-            }
+  @for (
+  prd of filteredProducts;
+  track prd.id;
+  let i=$index,c=$count,e=$even,o=$odd,f=$first,l=$last
+  ) {
+  <div class="col">
+    <!-- <div class="card" appHighlight defualtColor="blue" highlightColor="brown"> -->
+    <div class="card" defualtColor="blue" highlightColor="brown">
+      <img [src]="prd.imgUrl" class="card-img-top" alt="..." />
+      <div class="card-body">
+        <!-- <h5 class="card-title">{{ prd.name | uppercase}}</h5> -->
+        <!-- <h5 class="card-title">{{ prd.name | lowercase }}</h5> -->
+        <!-- <h5 class="card-title">{{ prd.name | titlecase }}</h5> -->
+        <h5 class="card-title">{{ prd.name | shorten: 4 }}</h5>
 
-            <!-- <div [ngSwitch]="prd.quantity">
-               <p class="card-text" *ngSwitchCase="0">Out of stock</p>
-               <p class="card-text" *ngSwitchCase="1">Last item</p>
-               <p class="card-text" *ngSwitchDefault>Quantity is {{ prd.quantity }}</p>
-            </div> -->
-
-            <!-- template variable , refrence -->
-            <input type="number" #quantityInput />
-            <button
-              class="btn btn-success"
-              [disabled]="prd.quantity == 0"
-              (click)="buy(prd.price, quantityInput.value, $event)"
-            >
-              Buy
-            </button>
-          </div>
-        </div>
+        <p class="card-text">Price is {{ prd.price | currency: 'EUR' : 'code' }}</p>
+        @switch (prd.quantity) {
+        @case (0) {
+        <p class="card-text">Out of stock</p>
+        }
+        @case (1) {
+        <p class="card-text">Last item</p>
+        }
+        @default {
+        <p class="card-text">Quantity is {{ prd.quantity }}</p>
+        }
+        }
+        <!-- template variable , refrence -->
+        <input type="number" #quantityInput />
+        <button class="btn btn-success" [disabled]="prd.quantity == 0"
+          (click)="buy(prd.price, quantityInput.value, $event)">
+          Buy
+        </button>
       </div>
-    }
-    <!-- @else if(){
-
-    }@else {
-
-    } -->
+    </div>
+  </div>
   } @empty {
-    <h1>No products to view</h1>
+  <h1>No products to view</h1>
   }
 </div>
+
+<!-- <h1>Today's date is {{d |date:'shortTime'}}</h1> -->
+<h1>{{ products[0] | json }}</h1>

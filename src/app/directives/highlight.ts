@@ -1,9 +1,9 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appHighlight]',
 })
-export class Highlight {
+export class Highlight implements OnChanges {
 
   // @Input('defualtColor') defColor:string='green'
   // @Input('highlightColor') hColor:string='yellow'
@@ -11,7 +11,10 @@ export class Highlight {
   @Input() highlightColor: string = 'yellow'
   constructor(private el: ElementRef, private render2: Renderer2) {
     // el.nativeElement.style.backgroundColor='green'
-    render2.setStyle(el.nativeElement, 'backgroundColor', this.defualtColor)
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+    this.render2.setStyle(this.el.nativeElement, 'backgroundColor', this.defualtColor)
   }
 
   @HostListener('mouseover')

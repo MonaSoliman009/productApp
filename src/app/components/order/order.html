@@ -1,0 +1,13 @@
+<h1>Order price is {{orderPrice}}</h1>
+<div class="w-50 m-auto">
+  <label for="" class="form-label">Categories</label>
+  <select class="form-select form-select-lg" name="" id="" [(ngModel)]="selectedCatId">
+  <option selected value="0">All</option>
+    @for (cat of categories; track cat.id) {
+    <option [value]="cat.id">{{ cat.name }}</option>
+    }
+  </select>
+</div>
+
+<h1>------------------  child component start --------------</h1>
+<app-products [sentSelectedCatId]="selectedCatId" (onOrderPriceChanged)="setOrderPrice($event)"></app-products>
