@@ -1,4 +1,4 @@
-<h1>Order price is {{orderPrice}}</h1>
+<h1 #header>Order price is {{orderPrice}}</h1>
 <div class="w-50 m-auto">
   <label for="" class="form-label">Categories</label>
   <select class="form-select form-select-lg" name="" id="" [(ngModel)]="selectedCatId">
@@ -9,5 +9,5 @@
   </select>
 </div>
 
-<h1>------------------  child component start --------------</h1>
+<h1 #header>------------------  child component start --------------</h1>
 <app-products [sentSelectedCatId]="selectedCatId" (onOrderPriceChanged)="setOrderPrice($event)"></app-products>
