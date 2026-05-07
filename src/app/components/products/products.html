@@ -1,42 +1,44 @@
 <div class="row row-cols-1 row-cols-md-4 g-4 m-5">
   @for (
-  prd of filteredProducts;
-  track prd.id;
-  let i=$index,c=$count,e=$even,o=$odd,f=$first,l=$last
+    prd of filteredProducts;
+    track prd.id;
+    let i=$index,c=$count,e=$even,o=$odd,f=$first,l=$last
   ) {
-  <div class="col">
-    <!-- <div class="card" appHighlight defualtColor="blue" highlightColor="brown"> -->
-    <div class="card" defualtColor="blue" highlightColor="brown">
-      <img [src]="prd.imgUrl" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <!-- <h5 class="card-title">{{ prd.name | uppercase}}</h5> -->
-        <!-- <h5 class="card-title">{{ prd.name | lowercase }}</h5> -->
-        <!-- <h5 class="card-title">{{ prd.name | titlecase }}</h5> -->
-        <h5 class="card-title">{{ prd.name | shorten: 4 }}</h5>
+    <div class="col">
+      <!-- <div class="card" appHighlight defualtColor="blue" highlightColor="brown"> -->
+      <div class="card" defualtColor="blue" highlightColor="brown">
+        <img [src]="prd.imgUrl" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <!-- <h5 class="card-title">{{ prd.name | uppercase}}</h5> -->
+          <!-- <h5 class="card-title">{{ prd.name | lowercase }}</h5> -->
+          <!-- <h5 class="card-title">{{ prd.name | titlecase }}</h5> -->
+          <h5 class="card-title">{{ prd.name | shorten: 4 }}</h5>
 
-        <p class="card-text">Price is {{ prd.price | currency: 'EUR' : 'code' }}</p>
-        @switch (prd.quantity) {
-        @case (0) {
-        <p class="card-text">Out of stock</p>
-        }
-        @case (1) {
-        <p class="card-text">Last item</p>
-        }
-        @default {
-        <p class="card-text">Quantity is {{ prd.quantity }}</p>
-        }
-        }
-        <!-- template variable , refrence -->
-        <input type="number" #quantityInput />
+          <p class="card-text">Price is {{ prd.price | currency: 'EUR' : 'code' }}</p>
+          @switch (prd.quantity) {
+            @case (0) {
+              <p class="card-text">Out of stock</p>
+            }
+            @case (1) {
+              <p class="card-text">Last item</p>
+            }
+            @default {
+              <p class="card-text">Quantity is {{ prd.quantity }}</p>
+            }
+          }
+          <!-- template variable , refrence -->
+          <!-- <input type="number" #quantityInput />
         <button class="btn btn-success" [disabled]="prd.quantity == 0"
           (click)="buy(prd.price, quantityInput.value, $event)">
           Buy
-        </button>
+        </button> -->
+          <!-- <button class="btn btn-success" (click)="navigateToDetails(prd.id)">Details</button> -->
+          <a  class="btn btn-success" [routerLink]="['/details',prd.id]" role="button">Details</a>
+        </div>
       </div>
     </div>
-  </div>
   } @empty {
-  <h1>No products to view</h1>
+    <h1>No products to view</h1>
   }
 </div>
 

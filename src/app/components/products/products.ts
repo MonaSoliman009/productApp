@@ -6,12 +6,12 @@ import { CurrencyPipe, DatePipe, JsonPipe, LowerCasePipe, NgClass, NgStyle, Titl
 import { Highlight } from '../../directives/highlight';
 import { ShortenPipe } from '../../pipes/shorten-pipe';
 import { StaticProducts } from '../../services/static-products';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-products',//directive
   imports: [FormsModule, Highlight, UpperCasePipe, LowerCasePipe, TitleCasePipe, CurrencyPipe,
-    DatePipe, JsonPipe, ShortenPipe
-  ],
+    DatePipe, JsonPipe, ShortenPipe, RouterLink],
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
@@ -27,7 +27,7 @@ export class Products {
   products: IProduct[];
   filteredProducts: IProduct[];
   private staticProductsService = inject(StaticProducts)
-
+  private router = inject(Router)
   // constructor(private staticProductsService:StaticProducts) {
   constructor() {
 
@@ -51,6 +51,11 @@ export class Products {
 
   // ngOnChanges(): void {
   //   this.filterProducts()
+  // }
+
+  // navigateToDetails(id: number) {
+  //   // this.router.navigateByUrl(`/details/${id}`)
+  //   this.router.navigate(['/details', id])
   // }
 
 }
