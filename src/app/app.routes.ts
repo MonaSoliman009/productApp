@@ -8,6 +8,7 @@ import { Info } from './components/info/info';
 import { Reviews } from './components/reviews/reviews';
 import { AppLayout } from './components/app-layout/app-layout';
 import { Details } from './components/details/details';
+import { authGuard } from './guards/auth-guard-guard';
 
 export const routes: Routes = [
   //first match wins
@@ -26,12 +27,14 @@ export const routes: Routes = [
           { path: 'reviews', component: Reviews }
         ]
       },
-      { path: 'order', component: Order, title: 'Order page' },
-      {path:"details/:id",component:Details}
+      { path: 'order', component: Order, title: 'Order page',canActivate:[authGuard] },
+
+      {path:"details/:id",component:Details},
+        { path: 'login', component: Login, title: 'Login page' },
+
     ]
   }
   ,
-  { path: 'login', component: Login, title: 'Login page' },
 
 
   //wild card route
