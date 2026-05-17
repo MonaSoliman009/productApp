@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, inject, QueryList, viewChild, ViewChild, viewChildren, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, QueryList, signal, viewChild, ViewChild, viewChildren, ViewChildren } from '@angular/core';
 import { ICategory } from '../../models/icategory';
 import { FormsModule } from '@angular/forms';
 import { Products } from "../products/products";
 import { StaticCategories } from '../../services/static-categories';
+import { CategoriesApi } from '../../services/categories-api';
 
 @Component({
   selector: 'app-order',
@@ -10,32 +11,25 @@ import { StaticCategories } from '../../services/static-categories';
   templateUrl: './order.html',
   styleUrl: './order.css',
 })
-export class Order implements AfterViewInit {
+export class Order implements OnInit {
   selectedCatId: number = 0
   orderPrice: number = 0
-
-  private staticCatService = inject(StaticCategories)
-  categories: ICategory[] = this.staticCatService.getAllCategories()
-
-
-  // constructor(private staticCatService:StaticCategories){
-  // this.categories=this.staticCatService.getAllCategories()
-  // }
-  // @ViewChild('header') headerEle!: ElementRef
+  private categoriesApiSer = inject(CategoriesApi)
   headerEle = viewChild<ElementRef>('header')
-  // @ViewChildren('header') headerElements!:QueryList<ElementRef>
   headerElements = viewChildren<ElementRef[]>('header')
-  // @ViewChild(Products) productsCom!:Products
+  categories=signal<ICategory[]>([])
 
+  ngOnInit(): void {
+    this.categoriesApiSer.getAllCategories().subscribe({
+      next:(res)=>{
+        this.categories.set(res)
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
+  }
   setOrderPrice(recievedTotalPrice: number) {
     this.orderPrice = recievedTotalPrice
-  }
-
-  ngAfterViewInit(): void {
-    console.log(this.headerEle());
-    console.log(this.headerElements());
-    // console.log(this.headerElements.get(1)?.nativeElement);
-    //  console.log(this.productsCom.totalOrderPrice);
-
   }
 }

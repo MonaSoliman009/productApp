@@ -1,4 +1,4 @@
-import { Component, effect, EventEmitter, inject, input, Input, OnChanges, output, Output, SimpleChanges } from '@angular/core';
+import { Component, effect, EventEmitter, inject, input, Input, OnChanges, OnInit, output, Output, signal, SimpleChanges } from '@angular/core';
 import { IProduct } from '../../models/iproduct';
 import { ICategory } from '../../models/icategory';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +7,9 @@ import { Highlight } from '../../directives/highlight';
 import { ShortenPipe } from '../../pipes/shorten-pipe';
 import { StaticProducts } from '../../services/static-products';
 import { Router, RouterLink } from '@angular/router';
+import { ProductsApi } from '../../services/products-api';
+import { Base } from '../../services/base';
+import { single } from 'rxjs';
 
 @Component({
   selector: 'app-products',//directive
@@ -15,47 +18,44 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './products.html',
   styleUrl: './products.css',
 })
-export class Products {
-  // @Input('sentSelectedCatId') recievedCatId:number=0
+export class Products implements OnInit{
   sentSelectedCatId = input<number>(0)
-  //1-define the event
-  // @Output() onOrderPriceChanged: EventEmitter<number> = new EventEmitter<number>()
   onOrderPriceChanged = output<number>()
   totalOrderPrice: number = 0
   cardClass = "col"
   d: Date = new Date()
-  products: IProduct[];
-  filteredProducts: IProduct[];
-  private staticProductsService = inject(StaticProducts)
+  products=signal<IProduct[]>([]);
+  filteredProducts=signal<IProduct[]>([]);
+  private productsApiService = inject(ProductsApi)
+  baseService=inject(Base)
   private router = inject(Router)
-  // constructor(private staticProductsService:StaticProducts) {
+  isLoading=signal<boolean>(false)
   constructor() {
-
-    this.products = this.staticProductsService.getAllProducts()
-    this.filteredProducts = this.products
     effect(() => {
-      this.filteredProducts = this.staticProductsService.getProductsByCatId(this.sentSelectedCatId())
+      this.productsApiService.getProductsByCatId(String(this.sentSelectedCatId())).subscribe((res)=>{
+       this.filteredProducts.set(res)
+      })
     })
   }
 
-  // constructor(){//dependency injection
-  //  this.products=
-  // }
+  ngOnInit(): void {
+    this.productsApiService.getAllProducts().subscribe({
+      next:(res)=>{
+       this.products.set(res)
+      this.filteredProducts.set(res)
+      }
+    })
 
-  // ngOnInit(){}
+
+    this.baseService.getLoaderStatus().subscribe((val)=>{
+      this.isLoading.set(val)
+    })
+  }
+
+
   buy(price: number, quantity: string, evt: MouseEvent) {
     this.totalOrderPrice += price * +quantity
     //2- fire the event
     this.onOrderPriceChanged.emit(this.totalOrderPrice)
   }
-
-  // ngOnChanges(): void {
-  //   this.filterProducts()
-  // }
-
-  // navigateToDetails(id: number) {
-  //   // this.router.navigateByUrl(`/details/${id}`)
-  //   this.router.navigate(['/details', id])
-  // }
-
 }

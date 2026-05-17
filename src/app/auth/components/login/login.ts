@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../services/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  standalone:false
 })
 export class Login implements OnInit {
 

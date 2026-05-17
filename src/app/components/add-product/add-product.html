@@ -1,0 +1,76 @@
+<!-- <p>{{ prdName.className | json }}</p> -->
+
+<form class="m-auto w-50" (ngSubmit)="addnewProduct()" #addPrdForm="ngForm">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      placeholder="Enter email"
+      name="name"
+      [(ngModel)]="product.name"
+      required
+      minlength="3"
+      maxlength="10"
+      #prdName="ngModel"
+    />
+    @if (prdName.invalid && prdName.touched) {
+      @if (prdName.hasError('required')) {
+        <p class="text-danger">Name is required</p>
+      }
+      @if (prdName.hasError('minlength')) {
+        <p class="text-danger">Name must be at least 3 characters</p>
+      }
+      @if (prdName.hasError('maxlength')) {
+        <p class="text-danger">Name should be maximun 10 characters</p>
+      }
+    }
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Price</label>
+    <input
+      type="number"
+      class="form-control"
+      id="exampleInputPassword1"
+      placeholder="Price"
+      [(ngModel)]="product.price"
+      name="price"
+      required
+      min="20"
+    />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Quantity</label>
+    <input
+      type="number"
+      class="form-control"
+      id="exampleInputPassword1"
+      placeholder="quantity"
+      [(ngModel)]="product.quantity"
+      name="quantity"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Image</label>
+    <input
+      type="file"
+      class="form-control"
+      id="exampleInputPassword1"
+      placeholder="Password"
+      [(ngModel)]="product.imgUrl"
+      name="imagUrl"
+    />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Categories</label>
+    <select class="form-select form-select-lg" name="catId" id="" [(ngModel)]="product.catId">
+      @for (cat of categories(); track cat.id) {
+        <option [value]="cat.id">{{ cat.name }}</option>
+      }
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="addPrdForm.invalid">Submit</button>
+</form>
