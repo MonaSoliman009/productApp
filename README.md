@@ -1,59 +1,35 @@
-# MearnApp
+# Angular Fundamentals: Data Binding & Directives
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.9.
+A teaching demo from an Angular fundamentals series (Day 2). It's a small product catalog that shows Angular 21's core template features in one place. The commented-out lines in the templates are deliberate: each one shows the older or alternative syntax next to the modern version, for comparison.
 
-## Development server
+## What it covers
 
-To start a local development server, run:
+- **Data binding:** interpolation, property binding, event binding (`(click)` with `$event`), and two-way binding with `[(ngModel)]`.
+- **Built-in control flow:** `@for` with `track` and its context variables (`$index`, `$count`, `$even`, `$odd`, `$first`, `$last`), `@if`, and `@switch`, shown alongside the older `*ngFor`, `*ngIf`, and `[ngSwitch]`.
+- **Class and style bindings:** `[class.x]`, `[style.x]`, `[ngClass]`, and `[ngStyle]`.
+- **A custom attribute directive:** [`appHighlight`](src/app/directives/highlight.ts) uses `@Input`, `@HostListener`, and `Renderer2` to change a card's background on hover.
+- **Typed models** with interfaces for products, categories, and courses.
+- **Standalone components:** navbar, home, products, and footer.
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Run it
 
 ```bash
-ng generate component component-name
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Open http://localhost:4200. Run unit tests with `npm test` (Vitest).
 
-```bash
-ng generate --help
+## Project structure
+
+```
+src/app/
+├── components/   # navbar, home (binding examples), products (catalog), footer
+├── directives/   # highlight.ts: custom attribute directive
+└── models/       # IProduct, ICategory, ICourse
 ```
 
-## Building
+## Author
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Mona Soliman, Senior Frontend Engineer (Angular).
+[LinkedIn](https://www.linkedin.com/in/mona-soliman-481748bb/) · [YouTube](https://www.youtube.com/@MonaCodingGirl)
